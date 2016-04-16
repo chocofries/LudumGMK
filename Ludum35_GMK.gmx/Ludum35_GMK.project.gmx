@@ -5,9 +5,25 @@
   </Configs>
   <NewExtensions/>
   <sounds name="sound"/>
-  <sprites name="sprites"/>
+  <sprites name="sprites">
+    <sprite>sprites\spr_wall</sprite>
+    <sprite>sprites\spr_p1</sprite>
+    <sprite>sprites\spr_p2</sprite>
+    <sprite>sprites\spr_slope</sprite>
+  </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
+  <objects name="objects">
+    <object>objects\obj_wall</object>
+    <object>objects\obj_slope</object>
+    <object>objects\obj_p1</object>
+    <object>objects\obj_p2</object>
+    <object>objects\con_1</object>
+    <object>objects\grp_phy</object>
+  </objects>
+  <rooms name="rooms">
+    <room>rooms\rm_1</room>
+  </rooms>
   <help>
     <rtf>help.rtf</rtf>
   </help>
