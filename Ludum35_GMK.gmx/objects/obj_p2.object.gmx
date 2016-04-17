@@ -32,9 +32,34 @@ start_y = y;
 
 turnspeed = 60;
 max_turnspeed = 180;
-jumping = false;
+in_air = false;
 jump_force = 0;
-jump_max = 70;
+jump_max = 50;
+airjump = 0;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Double jump timer
+
 </string>
           </argument>
         </arguments>
@@ -57,7 +82,18 @@ jump_max = 70;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>phy_angular_velocity = max(min(phy_angular_velocity, max_turnspeed),-max_turnspeed);
+            <string>///Step
+phy_angular_velocity = max(min(phy_angular_velocity, max_turnspeed),-max_turnspeed);
+
+if place_meeting(x,y,grp_phy)
+{
+    in_air = 0;
+    airjump = 1;
+}
+else
+{
+    in_air = 1;
+}
 </string>
           </argument>
         </arguments>
@@ -86,34 +122,7 @@ jump_max = 70;
         </arguments>
       </action>
     </event>
-    <event eventtype="5" enumb="40">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Charge Jump
-if jump_force &lt; jump_max
-{
-    jump_force += 2;
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="5" enumb="39">
+    <event eventtype="5" enumb="76">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -137,7 +146,34 @@ physics_apply_torque(turnspeed);
         </arguments>
       </action>
     </event>
-    <event eventtype="5" enumb="37">
+    <event eventtype="5" enumb="75">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Charge jump
+if jump_force &lt; jump_max
+{
+    jump_force += 4;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="5" enumb="74">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -161,7 +197,7 @@ physics_apply_torque(-turnspeed);
         </arguments>
       </action>
     </event>
-    <event eventtype="10" enumb="40">
+    <event eventtype="10" enumb="75">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -181,10 +217,39 @@ physics_apply_torque(-turnspeed);
             <string>///First Jump
 if place_meeting(x,y+1, grp_phy)
 {
-    jumping = true;
+    alarm[0] = 1;
     physics_apply_local_impulse(0,0,0,-jump_force);
     jump_force = 0;
     show_debug_message("First Jump");
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Second Jump
+if in_air = true &amp;&amp; alarm[0] &lt; 0 &amp;&amp; airjump = 1
+{
+    airjump = 0;
+    physics_apply_local_impulse(0,0,0,-jump_force);
+    jump_force = 0;
+    jumping = false;
+    show_debug_message("Air Jump");
 }
 </string>
           </argument>
@@ -195,7 +260,7 @@ if place_meeting(x,y+1, grp_phy)
   <PhysicsObject>-1</PhysicsObject>
   <PhysicsObjectSensor>0</PhysicsObjectSensor>
   <PhysicsObjectShape>2</PhysicsObjectShape>
-  <PhysicsObjectDensity>0.200000002980232</PhysicsObjectDensity>
+  <PhysicsObjectDensity>0.300000011920929</PhysicsObjectDensity>
   <PhysicsObjectRestitution>0</PhysicsObjectRestitution>
   <PhysicsObjectGroup>0</PhysicsObjectGroup>
   <PhysicsObjectLinearDamping>0.200000002980232</PhysicsObjectLinearDamping>
